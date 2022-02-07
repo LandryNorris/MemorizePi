@@ -78,4 +78,28 @@ class GuessComponentTest {
         assertEquals('8', component.state.value.lastDigit(0))
         assertEquals('5', component.state.value.lastDigit(1))
     }
+
+    @Test
+    fun testIncorrectGuess() {
+        val digits = "789423698305403"
+        val component = GuessComponent(context, digits)
+
+        var expectedState = GuessState(
+            digits = digits,
+            currentScore = 0,
+            bestScore = 0,
+            numIncorrect = 0
+        )
+        assertEquals(expectedState, component.state.value)
+
+        component.guessDigit('3')
+        expectedState = expectedState.copy(numIncorrect = 1)
+        assertEquals(expectedState, component.state.value)
+        assertEquals('7', component.state.value.currentDigit)
+
+        component.guessDigit('3')
+        expectedState = expectedState.copy(numIncorrect = 2)
+        assertEquals(expectedState, component.state.value)
+        assertEquals('7', component.state.value.currentDigit)
+    }
 }
