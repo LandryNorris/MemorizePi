@@ -10,9 +10,12 @@ interface GuessLogic {
     val state: Value<GuessState>
 
     fun guessDigit(digit: Char)
+    fun returnToMenu()
+    fun retry()
 }
 
-class GuessComponent(private val context: ComponentContext, digits: String):
+class GuessComponent(private val context: ComponentContext, digits: String,
+                     private val returnToMenu: () -> Unit):
     GuessLogic, ComponentContext by context {
     private val mutableState = MutableValue(GuessState(digits = digits))
     override val state: Value<GuessState> = mutableState
@@ -24,19 +27,39 @@ class GuessComponent(private val context: ComponentContext, digits: String):
             mutableState.reduce {
                 it.copy(currentScore = it.currentScore+1)
             }
-        } else {
+        } else { //incorrect guess
             mutableState.reduce {
                 it.copy(numIncorrect = it.numIncorrect+1)
             }
+
+            if(state.value.numIncorrect >= state.value.numIncorrectAllowed) {
+                onGameOver()
+            }
+        }
+    }
+
+    override fun returnToMenu() = returnToMenu.invoke()
+
+    override fun retry() {
+        mutableState.reduce {
+            GuessState(digits = state.value.digits)
+        }
+    }
+
+    private fun onGameOver() {
+        mutableState.reduce {
+            it.copy(gameOver = true)
         }
     }
 }
 
 data class GuessState(
     val digits: String = PI_DIGITS,
+    val numIncorrectAllowed: Int = 3,
     val currentScore: Int = 0,
     val bestScore: Int = 0,
-    val numIncorrect: Int = 0
+    val numIncorrect: Int = 0,
+    val gameOver: Boolean = false
 ) {
     val currentDigit: Char
         get() = digits[currentScore]

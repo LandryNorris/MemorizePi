@@ -6,6 +6,7 @@ import com.example.memorizepi.components.GuessComponent
 import com.example.memorizepi.components.GuessState
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class GuessComponentTest {
     private val context = DefaultComponentContext(LifecycleRegistry())
@@ -13,7 +14,7 @@ class GuessComponentTest {
     @Test
     fun testInitialState() {
         val digits = "75832964238291"
-        val component = GuessComponent(context, digits)
+        val component = GuessComponent(context, digits) {}
 
         val expectedState = GuessState(
             digits = digits,
@@ -27,7 +28,7 @@ class GuessComponentTest {
     @Test
     fun testGuessing() {
         val digits = "72867429910"
-        val component = GuessComponent(context, digits)
+        val component = GuessComponent(context, digits) {}
 
         var expectedState = GuessState(
             digits = digits,
@@ -57,7 +58,7 @@ class GuessComponentTest {
     @Test
     fun testDigitHelpers() {
         val digits = "758294023"
-        val component = GuessComponent(context, digits)
+        val component = GuessComponent(context, digits) {}
 
         assertEquals('7', component.state.value.currentDigit)
         assertEquals(null, component.state.value.lastDigit(0))
@@ -82,7 +83,7 @@ class GuessComponentTest {
     @Test
     fun testIncorrectGuess() {
         val digits = "789423698305403"
-        val component = GuessComponent(context, digits)
+        val component = GuessComponent(context, digits) {}
 
         var expectedState = GuessState(
             digits = digits,
@@ -101,5 +102,17 @@ class GuessComponentTest {
         expectedState = expectedState.copy(numIncorrect = 2)
         assertEquals(expectedState, component.state.value)
         assertEquals('7', component.state.value.currentDigit)
+    }
+
+    @Test
+    fun testGameOver() {
+        val digits = "752894903821"
+        val component = GuessComponent(context, digits) {}
+
+        component.guessDigit('8')
+        component.guessDigit('4')
+        component.guessDigit('2')
+
+        assertTrue(component.state.value.gameOver)
     }
 }

@@ -20,6 +20,11 @@ import com.example.memorizepi.components.GuessState
 fun GuessScreen(component: GuessLogic) {
     val state by component.state.subscribeAsState()
 
+    if(state.gameOver) {
+        GameOverPopup(returnToMenu = component::returnToMenu,
+            retry = component::retry)
+    }
+
     Column(modifier = Modifier.fillMaxSize()) {
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -53,7 +58,9 @@ fun GuessScreen(component: GuessLogic) {
                 fontSize = 20.sp)
         }
 
-        Column(modifier = Modifier.fillMaxWidth().weight(1f),
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .weight(1f),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly) {
             (0 until 3).forEach { rowIndex ->
@@ -91,6 +98,8 @@ fun GuessPreview() {
         GuessScreen(object: GuessLogic {
             override val state = MutableValue(GuessState(currentScore = 7, numIncorrect = 2))
             override fun guessDigit(digit: Char) {}
+            override fun returnToMenu() {}
+            override fun retry() {}
         })
     }
 }
