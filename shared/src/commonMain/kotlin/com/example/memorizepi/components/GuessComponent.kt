@@ -41,9 +41,10 @@ data class GuessState(
     val currentDigit: Char
         get() = digits[currentScore]
 
-    val lastDigit: Char?
-        get() = if(currentScore > 0) digits[currentScore-1] else null
-
-    val secondLastDigit: Char?
-        get() = if(currentScore > 1) digits[currentScore-2] else null
+    /**
+     * @param index How many spots back to look. 0 gives the last digit, 1 gives the second last,
+     * and so on.
+     */
+    fun lastDigit(index: Int) =
+        if(currentScore > index) digits[currentScore - (index+1)] else null
 }

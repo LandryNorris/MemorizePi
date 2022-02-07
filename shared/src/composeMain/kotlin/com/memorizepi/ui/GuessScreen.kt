@@ -24,11 +24,11 @@ fun GuessScreen(component: GuessLogic) {
         Row(modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.Bottom) {
-            Text(state.secondLastDigit?.toString() ?: "_",
+            Text(state.lastDigit(2)?.toString() ?: "_",
                 fontSize = 40.sp)
-            Text(state.lastDigit?.toString() ?: "_",
+            Text(state.lastDigit(1)?.toString() ?: "_",
                 fontSize = 75.sp)
-            Text("_",
+            Text(state.lastDigit(0)?.toString() ?: "_",
                 fontSize = 40.sp)
         }
 
@@ -57,12 +57,14 @@ fun GuessScreen(component: GuessLogic) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceEvenly) {
             (0 until 3).forEach { rowIndex ->
-                Row(modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly) {
+                Row(modifier = Modifier.fillMaxWidth().weight(1f),
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically) {
                     (0 until 3).forEach { columnIndex ->
                         val buttonIndex = columnIndex + 3*rowIndex
                         val buttonText = (buttonIndex+1).toString()
-                        Button(content = { Text(buttonText) }, onClick = {
+                        Button(modifier = Modifier.height(IntrinsicSize.Max),
+                            content = { Text(buttonText) }, onClick = {
                             //each String is only one char, so we just get the first.
                             component.guessDigit(buttonText.first())
                         })
@@ -70,9 +72,14 @@ fun GuessScreen(component: GuessLogic) {
                 }
             }
 
-            Button(content = { Text("0") }, onClick = {
-                component.guessDigit('0')
-            })
+            Row(modifier = Modifier.fillMaxWidth().weight(1f),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically) {
+                Button(modifier = Modifier.height(IntrinsicSize.Max),
+                    content = { Text("0") }, onClick = {
+                        component.guessDigit('0')
+                    })
+            }
         }
     }
 }
