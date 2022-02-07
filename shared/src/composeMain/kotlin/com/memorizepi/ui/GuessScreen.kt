@@ -91,12 +91,26 @@ fun GuessScreen(component: GuessLogic) {
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun GuessPreview() {
     MaterialTheme {
         GuessScreen(object: GuessLogic {
             override val state = MutableValue(GuessState(currentScore = 7, numIncorrect = 2))
+            override fun guessDigit(digit: Char) {}
+            override fun returnToMenu() {}
+            override fun retry() {}
+        })
+    }
+}
+
+
+@Preview(showSystemUi = true)
+@Composable
+fun GuessPreview2() {
+    MaterialTheme {
+        GuessScreen(object: GuessLogic {
+            override val state = MutableValue(GuessState(currentScore = 7, numIncorrect = 3, gameOver = true))
             override fun guessDigit(digit: Char) {}
             override fun returnToMenu() {}
             override fun retry() {}
