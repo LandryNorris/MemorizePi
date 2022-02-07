@@ -1,0 +1,20 @@
+Memorize Pi
+===========
+
+This app is designed to facilitate memorizing the digits of Pi.
+
+Technology
+----------
+
+This app uses Kotlin Multiplatform Mobile to allow code to be
+cross-platform, while also running close to native. The UI is
+created using Jetbrains Compose.
+
+Status of iOS code
+------------------
+
+Jetbrains is working on iOS support in their fork of Compose.
+Because I use Compose for Android UI in this project, I plan to
+wait until iOS support for Compose reaches public release. Until
+then, the app will remain Android-only in terms of UI. Logic will
+be written cross-platform, however.
