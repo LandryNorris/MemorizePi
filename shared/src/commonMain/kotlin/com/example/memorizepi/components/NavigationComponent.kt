@@ -2,6 +2,7 @@ package com.example.memorizepi.components
 
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.router.RouterState
+import com.arkivanov.decompose.router.pop
 import com.arkivanov.decompose.router.push
 import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
@@ -42,7 +43,9 @@ class NavigationComponent(context: ComponentContext): Navigation, ComponentConte
         }
 
     private fun guessLogic(context: ComponentContext, digits: String) =
-        GuessComponent(context, digits)
+        GuessComponent(context, digits, returnToMenu = {
+            router.pop()
+        })
 
     private sealed class Config : Parcelable {
         @Parcelize
