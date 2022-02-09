@@ -5,6 +5,10 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
 import com.example.memorizepi.models.PI_DIGITS
+import com.example.memorizepi.repositories.rounds.RoundRepository
+import kotlinx.datetime.Clock
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 interface GuessLogic {
     val state: Value<GuessState>
@@ -16,13 +20,23 @@ interface GuessLogic {
 
 class GuessComponent(private val context: ComponentContext, digits: String,
                      private val returnToMenu: () -> Unit):
-    GuessLogic, ComponentContext by context {
+    GuessLogic, KoinComponent, ComponentContext by context {
     private val mutableState = MutableValue(GuessState(digits = digits))
+    private val roundRepository by inject<RoundRepository>()
     override val state: Value<GuessState> = mutableState
+
+    private val clock = Clock.System
 
     override fun guessDigit(digit: Char) {
         if(!digit.isDigit()) throw IllegalArgumentException("Entry is not a digit")
         val currentDigit = state.value.currentDigit
+
+        //handle start time.
+        if(state.value.startTime == 0L) mutableState.reduce {
+            it.copy(startTime = clock.now().toEpochMilliseconds())
+        }
+
+        //check guess
         if(digit == currentDigit) {
             mutableState.reduce {
                 it.copy(currentScore = it.currentScore+1)
@@ -50,12 +64,14 @@ class GuessComponent(private val context: ComponentContext, digits: String,
         mutableState.reduce {
             it.copy(gameOver = true)
         }
+        roundRepository.saveGame(state.value)
     }
 }
 
 data class GuessState(
     val digits: String = PI_DIGITS,
     val numIncorrectAllowed: Int = 3,
+    val startTime: Long = 0L,
     val currentScore: Int = 0,
     val bestScore: Int = 0,
     val numIncorrect: Int = 0,

@@ -1,5 +1,6 @@
 buildscript {
     val composeVersion: String by project
+    val sqlVersion: String by project
 
     repositories {
         gradlePluginPortal()
@@ -10,6 +11,7 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.6.10")
         classpath("com.android.tools.build:gradle:7.1.0")
         classpath("org.jetbrains.compose:compose-gradle-plugin:$composeVersion")
+        classpath("com.squareup.sqldelight:gradle-plugin:$sqlVersion")
     }
 }
 

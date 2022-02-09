@@ -1,10 +1,13 @@
 val decomposeVersion: String by project
+val sqlVersion: String by project
+val koinVersion: String by project
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
+    id("com.squareup.sqldelight")
     id("io.gitlab.arturbosch.detekt").version("1.19.0")
 }
 
@@ -24,7 +27,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
+                implementation("io.insert-koin:koin-core:$koinVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
+                implementation("com.squareup.sqldelight:coroutines-extensions:1.5.3")
             }
         }
         val commonTest by getting {
@@ -50,6 +56,10 @@ kotlin {
 
         val androidMain by getting {
             dependsOn(composeMain)
+
+            dependencies {
+                implementation("com.squareup.sqldelight:android-driver:$sqlVersion")
+            }
         }
         val androidTest by getting {
             dependencies {
@@ -65,6 +75,10 @@ kotlin {
             iosX64Main.dependsOn(this)
             iosArm64Main.dependsOn(this)
             //iosSimulatorArm64Main.dependsOn(this)
+
+            dependencies {
+                implementation("com.squareup.sqldelight:native-driver:$sqlVersion")
+            }
         }
         val iosX64Test by getting
         val iosArm64Test by getting
@@ -99,4 +113,10 @@ detekt {
     source = files(
         "src/commonMain/kotlin"
     )
+}
+
+sqldelight {
+    database("AppDatabase") {
+        packageName = "com.memorizepi"
+    }
 }
