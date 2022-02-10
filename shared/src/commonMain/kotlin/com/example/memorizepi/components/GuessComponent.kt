@@ -18,11 +18,11 @@ interface GuessLogic {
     fun retry()
 }
 
-class GuessComponent(private val context: ComponentContext, digits: String,
+class GuessComponent(private val context: ComponentContext, private val digits: String,
                      private val returnToMenu: () -> Unit):
     GuessLogic, KoinComponent, ComponentContext by context {
-    private val mutableState = MutableValue(GuessState(digits = digits))
     private val roundRepository by inject<RoundRepository>()
+    private val mutableState = MutableValue(initGame())
     override val state: Value<GuessState> = mutableState
 
     private val clock = Clock.System
@@ -39,7 +39,8 @@ class GuessComponent(private val context: ComponentContext, digits: String,
         //check guess
         if(digit == currentDigit) {
             mutableState.reduce {
-                it.copy(currentScore = it.currentScore+1)
+                val newScore = it.currentScore+1
+                it.copy(currentScore = newScore, bestScore = maxOf(it.bestScore, newScore))
             }
         } else { //incorrect guess
             mutableState.reduce {
@@ -56,9 +57,12 @@ class GuessComponent(private val context: ComponentContext, digits: String,
 
     override fun retry() {
         mutableState.reduce {
-            GuessState(digits = state.value.digits)
+            initGame()
         }
     }
+
+    private fun initGame() = GuessState(digits = digits, bestScore = roundRepository.topScore,
+        gameOver = false)
 
     private fun onGameOver() {
         mutableState.reduce {

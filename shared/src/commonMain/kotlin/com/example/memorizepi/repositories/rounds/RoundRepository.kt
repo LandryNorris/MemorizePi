@@ -6,6 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 abstract class RoundRepository {
     abstract fun saveGame(state: GuessState)
-
     abstract val rounds: Flow<List<Round>>
+    abstract val topScore: Int
 }

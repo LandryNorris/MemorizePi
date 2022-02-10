@@ -6,6 +6,7 @@ import com.example.memorizepi.models.toModel
 import com.example.memorizepi.sql.Database
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
@@ -19,4 +20,5 @@ class SqlRoundRepository(private val database: Database): RoundRepository() {
     override val rounds: Flow<List<Round>> = database.rounds.map {
             rounds -> rounds.map { it.toModel() }
     }
+    override val topScore: Int = database.topScore
 }

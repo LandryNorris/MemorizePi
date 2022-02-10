@@ -37,6 +37,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
+                implementation("io.insert-koin:koin-test:$koinVersion")
             }
         }
 
