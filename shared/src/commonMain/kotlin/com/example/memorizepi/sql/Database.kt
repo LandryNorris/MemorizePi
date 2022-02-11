@@ -1,11 +1,9 @@
 package com.example.memorizepi.sql
 
 import com.example.memorizepi.models.Round
-import com.memorizepi.AppDatabase
+import com.memorizepi.generated.AppDatabase
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOne
-import kotlinx.coroutines.flow.map
 
 class Database(factory: DriverFactory) {
     private val database = AppDatabase(factory.createDriver())

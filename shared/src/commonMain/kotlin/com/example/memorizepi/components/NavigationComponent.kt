@@ -23,7 +23,7 @@ interface Navigation {
 }
 
 class NavigationComponent(context: ComponentContext): Navigation, KoinComponent, ComponentContext by context {
-    private val router =
+    val router =
         router<Config, Navigation.Child>(
             initialConfiguration = Config.Menu,
             handleBackButton = true, // Pop the back stack on back button press
@@ -52,7 +52,7 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
             router.pop()
         })
 
-    private sealed class Config : Parcelable {
+    sealed class Config : Parcelable {
         @Parcelize
         object Menu: Config()
 

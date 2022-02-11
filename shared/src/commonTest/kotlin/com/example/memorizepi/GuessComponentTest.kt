@@ -135,6 +135,52 @@ class GuessComponentTest {
     }
 
     @Test
+    fun testGuessNonDigit() {
+        val digits = "752894903821"
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
+
+        val exception = try {
+            component.guessDigit('a')
+            null
+        } catch (e: IllegalArgumentException) {
+            e
+        }
+
+        assertNotNull(exception)
+    }
+
+    @Test
+    fun testReturnToMenu() {
+        var returnedToMenu = false
+        val digits = "752894903821"
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {
+            returnedToMenu = true
+        }
+
+        component.returnToMenu()
+
+        assertTrue(returnedToMenu)
+    }
+
+    @Test
+    fun testRetry() {
+        val digits = "752894903821"
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
+
+        val initialState = component.state.value
+        component.guessDigit('8')
+        component.guessDigit('4')
+        component.guessDigit('2')
+
+        assertTrue(component.state.value.gameOver)
+
+        component.retry()
+        assertFalse(component.state.value.gameOver)
+
+        assertEquals(initialState, component.state.value)
+    }
+
+    @Test
     fun testHighScore() {
         val digits = "752894903821"
         val component = GuessComponent(context, digits, DefaultRoundRepository) {}

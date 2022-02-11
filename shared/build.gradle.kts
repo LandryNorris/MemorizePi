@@ -34,7 +34,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation("io.insert-koin:koin-core:$koinVersion")
+                api("io.insert-koin:koin-core:$koinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.5.3")
@@ -97,18 +97,21 @@ tasks {
         isEnabled = true
         htmlReportDir.set(layout.buildDirectory.dir("report/html"))
         includes = listOf("com.memorizepi.*")
+        excludes = listOf("com.memorizepi.generated.*") //no need to test generated code
     }
 
     koverMergedXmlReport {
         isEnabled = true
         xmlReportFile.set(layout.buildDirectory.file("report/report.xml"))
         includes = listOf("com.memorizepi.*")
+        excludes = listOf("com.memorizepi.generated.*") //no need to test generated code
     }
 }
 
 kover {
     isDisabled = false
     coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
+    generateReportOnCheck = true
 }
 
 android {
@@ -136,6 +139,6 @@ detekt {
 
 sqldelight {
     database("AppDatabase") {
-        packageName = "com.memorizepi"
+        packageName = "com.memorizepi.generated"
     }
 }

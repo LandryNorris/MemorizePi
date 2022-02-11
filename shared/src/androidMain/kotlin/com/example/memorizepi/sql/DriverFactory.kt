@@ -3,7 +3,7 @@ package com.example.memorizepi.sql
 import android.content.Context
 import com.squareup.sqldelight.android.AndroidSqliteDriver
 import com.squareup.sqldelight.db.SqlDriver
-import com.memorizepi.AppDatabase
+import com.memorizepi.generated.AppDatabase
 
 actual class DriverFactory(private val context: Context) {
     actual fun createDriver(): SqlDriver {
