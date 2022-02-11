@@ -8,7 +8,8 @@ plugins {
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
     id("com.squareup.sqldelight")
-    id("io.gitlab.arturbosch.detekt").version("1.19.0")
+    id("io.gitlab.arturbosch.detekt") version "1.19.0"
+    id("org.jetbrains.kotlinx.kover") version "0.5.0"
 }
 
 kotlin {
@@ -89,6 +90,25 @@ kotlin {
             dependsOn(commonTest)
         }
     }
+}
+
+tasks {
+    koverMergedHtmlReport {
+        isEnabled = true
+        htmlReportDir.set(layout.buildDirectory.dir("report/html"))
+        includes = listOf("com.memorizepi.*")
+    }
+
+    koverMergedXmlReport {
+        isEnabled = true
+        xmlReportFile.set(layout.buildDirectory.file("report/report.xml"))
+        includes = listOf("com.memorizepi.*")
+    }
+}
+
+kover {
+    isDisabled = false
+    coverageEngine.set(kotlinx.kover.api.CoverageEngine.INTELLIJ)
 }
 
 android {
