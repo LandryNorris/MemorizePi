@@ -14,6 +14,7 @@ import kotlin.test.*
 
 object DefaultRoundRepository: RoundRepository() {
     override fun saveGame(state: GuessState) {}
+    override fun clear() {}
 
     override val rounds = MutableSharedFlow<List<Round>>()
     override val topScore: Int = 0

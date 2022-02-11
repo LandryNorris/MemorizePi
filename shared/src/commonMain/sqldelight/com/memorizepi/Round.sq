@@ -17,6 +17,9 @@ SELECT score FROM Round LIMIT ?;
 getTopScore:
 SELECT MAX(score) FROM Round;
 
+clearDB:
+DELETE FROM Round;
+
 insert:
 INSERT INTO Round(score, timestamp, secondsInGame) VALUES (?, ?, ?);
 

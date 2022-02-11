@@ -17,13 +17,14 @@ import kotlin.test.*
 class NavigationTest {
     private val context = DefaultComponentContext(LifecycleRegistry())
     private val koinModule = module {
-        single {
+        single<RoundRepository> {
             object: RoundRepository() {
                 override fun saveGame(state: GuessState) {}
+                override fun clear() {}
 
                 override val rounds = MutableSharedFlow<List<Round>>()
                 override val topScore = 0
-            } as RoundRepository
+            }
         }
     }
 

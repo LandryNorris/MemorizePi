@@ -1,6 +1,9 @@
+import org.jetbrains.compose.ComposeBuildConfig.composeVersion
+
 val decomposeVersion: String by project
 val sqlVersion: String by project
 val koinVersion: String by project
+val coroutinesVersion: String by project
 
 plugins {
     kotlin("multiplatform")
@@ -38,6 +41,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.3.2")
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.5.3")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
             }
         }
         val commonTest by getting {
@@ -45,6 +49,7 @@ kotlin {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
                 implementation("io.insert-koin:koin-test:$koinVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
 
@@ -70,9 +75,11 @@ kotlin {
             }
         }
         val androidTest by getting {
+            dependsOn(commonTest)
             dependencies {
                 implementation(kotlin("test-junit"))
                 implementation("junit:junit:4.13.2")
+                implementation("com.squareup.sqldelight:sqlite-driver:$sqlVersion")
             }
         }
         val iosMain by getting {
@@ -88,6 +95,9 @@ kotlin {
         }
         val iosTest by getting {
             dependsOn(commonTest)
+        }
+        val iosSimulatorArm64Test by getting {
+            dependsOn(iosTest)
         }
     }
 }
@@ -127,7 +137,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-rc03"
+        kotlinCompilerExtensionVersion = "1.1.0"
     }
 }
 

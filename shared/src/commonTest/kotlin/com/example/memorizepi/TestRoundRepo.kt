@@ -18,8 +18,8 @@ class TestRoundRepo {
     @Test
     fun testStartingBestScore() {
         val repo = object: RoundRepository() {
-            override fun saveGame(state: GuessState) {
-            }
+            override fun saveGame(state: GuessState) {}
+            override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
             override val topScore: Int = 5
@@ -34,8 +34,8 @@ class TestRoundRepo {
     @Test
     fun testBestScoreIncreasesAsYouBeatIt() {
         val repo = object: RoundRepository() {
-            override fun saveGame(state: GuessState) {
-            }
+            override fun saveGame(state: GuessState) {}
+            override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
             override val topScore: Int = 3
@@ -76,6 +76,7 @@ class TestRoundRepo {
             override fun saveGame(state: GuessState) {
                 saveGameCalled = true
             }
+            override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
             override val topScore: Int = 3

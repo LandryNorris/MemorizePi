@@ -9,10 +9,10 @@ import org.koin.core.context.GlobalContext.startKoin
 import org.koin.dsl.module
 
 fun initialize(context: Context) {
-    val driverFactory = DriverFactory(context.applicationContext)
+    val driverFactory = DriverFactory(context.applicationContext).createDriver()
     val koinModule = module {
         single { Database(driverFactory) }
-        single { SqlRoundRepository(get()) as RoundRepository }
+        single<RoundRepository> { SqlRoundRepository(get()) }
     }
 
     startKoin {
