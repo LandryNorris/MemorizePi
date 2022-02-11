@@ -14,13 +14,19 @@ plugins {
 kotlin {
     android()
     
-    listOf(
-        iosX64(),
-        iosArm64(),
-        //iosSimulatorArm64() sure all ios dependencies support this target
-    ).forEach {
-        it.binaries.framework {
-            baseName = "shared"
+    ios {
+        binaries {
+            framework {
+                baseName = "shared"
+            }
+        }
+    }
+
+    iosSimulatorArm64 {
+        binaries {
+            framework {
+                baseName = "shared"
+            }
         }
     }
 
@@ -68,27 +74,19 @@ kotlin {
                 implementation("junit:junit:4.13.2")
             }
         }
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        //val iosSimulatorArm64Main by getting
-        val iosMain by creating {
+        val iosMain by getting {
             dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            //iosSimulatorArm64Main.dependsOn(this)
+            //dependsOn(composeMain) //once compose supports iOS
 
             dependencies {
                 implementation("com.squareup.sqldelight:native-driver:$sqlVersion")
             }
         }
-        val iosX64Test by getting
-        val iosArm64Test by getting
-        //val iosSimulatorArm64Test by getting
-        val iosTest by creating {
+        val iosSimulatorArm64Main by getting {
+            dependsOn(iosMain)
+        }
+        val iosTest by getting {
             dependsOn(commonTest)
-            iosX64Test.dependsOn(this)
-            iosArm64Test.dependsOn(this)
-            //iosSimulatorArm64Test.dependsOn(this)
         }
     }
 }
