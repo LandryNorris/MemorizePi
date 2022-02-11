@@ -14,6 +14,9 @@ SELECT score FROM Round;
 selectTopScores:
 SELECT score FROM Round LIMIT ?;
 
+getTopScore:
+SELECT MAX(score) FROM Round;
+
 insert:
 INSERT INTO Round(score, timestamp, secondsInGame) VALUES (?, ?, ?);
 
