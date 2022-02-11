@@ -13,9 +13,9 @@ import org.koin.core.component.inject
 interface GuessLogic {
     val state: Value<GuessState>
 
-    fun guessDigit(digit: Char)
-    fun returnToMenu()
-    fun retry()
+    fun guessDigit(digit: Char) {}
+    fun returnToMenu() {}
+    fun retry() {}
 }
 
 class GuessComponent(private val context: ComponentContext, private val digits: String,

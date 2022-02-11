@@ -1,25 +1,31 @@
 package com.example.memorizepi.sql
 
 import com.example.memorizepi.models.Round
-import com.memorizepi.AppDatabase
+import com.memorizepi.generated.AppDatabase
+import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
-import com.squareup.sqldelight.runtime.coroutines.mapToOne
-import kotlinx.coroutines.flow.map
 
-class Database(factory: DriverFactory) {
-    private val database = AppDatabase(factory.createDriver())
+class Database(driver: SqlDriver) {
+    private val database = AppDatabase(driver)
     private val queries = database.roundQueries
 
     fun saveRound(round: Round) {
         queries.insert(round.score, round.timestamp, round.secondsInRound)
     }
 
-    val rounds = queries.selectAll().asFlow().mapToList()
+    fun clearDB() {
+        queries.clearDB()
+    }
 
-    val scores = queries.selectAllScores().asFlow().mapToList()
+    val rounds
+        get() = queries.selectAll().asFlow().mapToList()
 
-    val topScore = queries.getTopScore().executeAsOne().MAX?.toInt() ?: 0
+    val scores
+        get() = queries.selectAllScores().asFlow().mapToList()
+
+    val topScore
+        get() = queries.getTopScore().executeAsOne().MAX?.toInt() ?: 0
 
     fun topScores(count: Long) = queries.selectTopScores(count).asFlow().mapToList()
 }
