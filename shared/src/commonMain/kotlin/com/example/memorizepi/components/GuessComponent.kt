@@ -19,9 +19,9 @@ interface GuessLogic {
 }
 
 class GuessComponent(private val context: ComponentContext, private val digits: String,
+                     private val roundRepository: RoundRepository,
                      private val returnToMenu: () -> Unit):
-    GuessLogic, KoinComponent, ComponentContext by context {
-    private val roundRepository by inject<RoundRepository>()
+    GuessLogic, ComponentContext by context {
     private val mutableState = MutableValue(initGame())
     override val state: Value<GuessState> = mutableState
 

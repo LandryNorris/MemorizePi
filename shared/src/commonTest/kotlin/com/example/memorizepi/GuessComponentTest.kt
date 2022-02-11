@@ -6,17 +6,10 @@ import com.example.memorizepi.components.GuessComponent
 import com.example.memorizepi.components.GuessState
 import com.example.memorizepi.models.Round
 import com.example.memorizepi.repositories.rounds.RoundRepository
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
-import org.koin.dsl.module
 import org.koin.test.KoinTest
-import org.koin.test.mock.MockProvider
-import org.koin.test.mock.declare
-import org.koin.test.mock.declareMock
-import kotlin.jvm.JvmStatic
 import kotlin.test.*
 
 object DefaultRoundRepository: RoundRepository() {
@@ -26,24 +19,13 @@ object DefaultRoundRepository: RoundRepository() {
     override val topScore: Int = 0
 }
 
-class GuessComponentTest: KoinTest {
+class GuessComponentTest {
     private val context = DefaultComponentContext(LifecycleRegistry())
-
-    @BeforeTest
-    fun init() {
-        startKoin {}
-    }
-
-    @AfterTest
-    fun cleanup() {
-        stopKoin()
-    }
 
     @Test
     fun testInitialState() {
-        declareDefaultRepo()
         val digits = "75832964238291"
-        val component = GuessComponent(context, digits) {}
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
 
         val expectedState = GuessState(
             digits = digits,
@@ -56,9 +38,8 @@ class GuessComponentTest: KoinTest {
 
     @Test
     fun testGuessing() {
-        declareDefaultRepo()
         val digits = "72867429910"
-        val component = GuessComponent(context, digits) {}
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
 
         var expectedState = GuessState(
             digits = digits,
@@ -91,9 +72,8 @@ class GuessComponentTest: KoinTest {
 
     @Test
     fun testDigitHelpers() {
-        declareDefaultRepo()
         val digits = "758294023"
-        val component = GuessComponent(context, digits) {}
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
 
         assertEquals('7', component.state.value.currentDigit)
         assertEquals(null, component.state.value.lastDigit(0))
@@ -117,9 +97,8 @@ class GuessComponentTest: KoinTest {
 
     @Test
     fun testIncorrectGuess() {
-        declareDefaultRepo()
         val digits = "789423698305403"
-        val component = GuessComponent(context, digits) {}
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
 
         var expectedState = GuessState(
             digits = digits,
@@ -145,9 +124,8 @@ class GuessComponentTest: KoinTest {
 
     @Test
     fun testGameOver() {
-        declareDefaultRepo()
         val digits = "752894903821"
-        val component = GuessComponent(context, digits) {}
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
 
         component.guessDigit('8')
         component.guessDigit('4')
@@ -158,16 +136,9 @@ class GuessComponentTest: KoinTest {
 
     @Test
     fun testHighScore() {
-        declareDefaultRepo()
         val digits = "752894903821"
-        val component = GuessComponent(context, digits) {}
+        val component = GuessComponent(context, digits, DefaultRoundRepository) {}
 
         assertEquals(0, component.state.value.bestScore)
-    }
-
-    private fun declareDefaultRepo() {
-        declare {
-            DefaultRoundRepository as RoundRepository
-        }
     }
 }

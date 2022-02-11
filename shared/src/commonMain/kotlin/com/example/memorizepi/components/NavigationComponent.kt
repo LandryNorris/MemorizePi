@@ -9,6 +9,9 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
 import com.example.memorizepi.models.PI_DIGITS
+import com.example.memorizepi.repositories.rounds.RoundRepository
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 interface Navigation {
     val routerState: Value<RouterState<*, Child>>
@@ -19,13 +22,15 @@ interface Navigation {
     }
 }
 
-class NavigationComponent(context: ComponentContext): Navigation, ComponentContext by context {
+class NavigationComponent(context: ComponentContext): Navigation, KoinComponent, ComponentContext by context {
     private val router =
         router<Config, Navigation.Child>(
             initialConfiguration = Config.Menu,
             handleBackButton = true, // Pop the back stack on back button press
             childFactory = ::createChild
         )
+
+    private val roundRepository by inject<RoundRepository>()
 
     override val routerState: Value<RouterState<*, Navigation.Child>> = router.state
 
@@ -43,7 +48,7 @@ class NavigationComponent(context: ComponentContext): Navigation, ComponentConte
         }
 
     private fun guessLogic(context: ComponentContext, digits: String) =
-        GuessComponent(context, digits, returnToMenu = {
+        GuessComponent(context, digits, roundRepository, returnToMenu = {
             router.pop()
         })
 
