@@ -17,6 +17,7 @@ fun NavigationScreen(navigationComponent: Navigation) {
                 when(val child = it.instance) {
                     is Navigation.Child.Menu -> MenuScreen(child.component)
                     is Navigation.Child.Guess -> GuessScreen(child.component)
+                    is Navigation.Child.History -> HistoryScreen(child.component)
                 }
             }
         }
