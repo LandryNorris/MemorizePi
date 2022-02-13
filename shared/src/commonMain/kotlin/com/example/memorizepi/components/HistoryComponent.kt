@@ -6,20 +6,19 @@ import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
 import com.example.memorizepi.models.Round
 import com.example.memorizepi.repositories.rounds.RoundRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 
 interface HistoryLogic {
-    val state: Value<HistoryState>
+    val state: Flow<HistoryState>
+    val rounds: Flow<List<Round>>
     fun setSortMethod(sortMethod: SortMethod)
 }
 
 class HistoryComponent(private val context: ComponentContext,
                        private val roundRepository: RoundRepository):
     HistoryLogic, ComponentContext by context {
-    private val mutableState = MutableValue(HistoryState())
-    override val state: Value<HistoryState>
+    private val mutableState = MutableStateFlow(HistoryState())
+    override val state: Flow<HistoryState>
         get() = mutableState
 
     private val dateComparatorNewest = Comparator<Round> { a, b ->
@@ -35,20 +34,21 @@ class HistoryComponent(private val context: ComponentContext,
         a.score - b.score
     }
 
-    val rounds = roundRepository.rounds.map {
-        it.sortedWith(comparator)
-    }
-
-    private val comparator
-        get() = when(state.value.sortMethod) {
+    private val comparator = state.map {
+        when(it.sortMethod) {
             SortMethod.NEWEST -> dateComparatorNewest
             SortMethod.OLDEST -> dateComparatorOldest
             SortMethod.BEST -> scoreComparatorBest
             SortMethod.WORST -> scoreComparatorWorst
         }
+    }
+
+    override val rounds = roundRepository.rounds.combine(comparator) { rounds, comparator ->
+        rounds.sortedWith(comparator)
+    }
 
     override fun setSortMethod(sortMethod: SortMethod) {
-        mutableState.reduce {
+        mutableState.update {
             it.copy(sortMethod = sortMethod)
         }
     }
