@@ -19,6 +19,7 @@ interface Navigation {
     sealed class Child {
         class Menu(val component: MenuLogic): Child()
         class Guess(val component: GuessLogic): Child()
+        class History(val component: HistoryLogic): Child()
     }
 }
 
@@ -38,12 +39,17 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
         when (config) {
             is Config.Menu -> Navigation.Child.Menu(mainLogic())
             is Config.Guess -> Navigation.Child.Guess(guessLogic(componentContext, config.digits))
+            is Config.History -> Navigation.Child.History(historyLogic(componentContext))
         }
 
     private fun mainLogic() =
         object: MenuLogic {
             override fun goToGuess() {
                 router.push(Config.Guess(PI_DIGITS))
+            }
+
+            override fun goToHistory() {
+                router.push(Config.History)
             }
         }
 
@@ -52,11 +58,16 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
             router.pop()
         })
 
+    private fun historyLogic(context: ComponentContext) = HistoryComponent(context, roundRepository)
+
     sealed class Config : Parcelable {
         @Parcelize
         object Menu: Config()
 
         @Parcelize
         class Guess(val digits: String): Config()
+
+        @Parcelize
+        object History: Config()
     }
 }
