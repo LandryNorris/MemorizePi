@@ -53,6 +53,14 @@ class NavigationTest {
     }
 
     @Test
+    fun testNavigateToHistory() {
+        val navComponent = NavigationComponent(context)
+        val config = NavigationComponent.Config.History
+        navComponent.router.push(config)
+        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.History)
+    }
+
+    @Test
     fun testNavigateViaMenuLogic() {
         val navComponent = NavigationComponent(context)
         val menuConfig = navComponent.router.state.value.activeChild.instance

@@ -61,5 +61,4 @@ enum class SortMethod {
     WORST
 }
 
-data class HistoryState(val rounds: List<Round> = listOf(),
-                        val sortMethod: SortMethod = SortMethod.NEWEST)
+data class HistoryState(val sortMethod: SortMethod = SortMethod.NEWEST)

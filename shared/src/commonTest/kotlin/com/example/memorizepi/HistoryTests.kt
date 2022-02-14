@@ -25,14 +25,8 @@ class HistoryTests {
 
     @Test
     fun testDefaultState() {
-        val historyState = HistoryState()
-
-        assertTrue(historyState.rounds.isEmpty())
-        assertEquals(SortMethod.NEWEST, historyState.sortMethod)
-
-        val rounds = listOf(Round(1L, 14, 183947L, 12L))
-        val state2 = HistoryState(rounds = rounds)
-        assertTrue(state2.rounds.isNotEmpty())
+        assertEquals(SortMethod.NEWEST, HistoryState().sortMethod)
+        assertEquals(SortMethod.BEST, HistoryState(sortMethod = SortMethod.BEST).sortMethod)
     }
 
     @Test
