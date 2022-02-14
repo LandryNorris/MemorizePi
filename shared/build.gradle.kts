@@ -114,7 +114,7 @@ tasks {
         isEnabled = true
         xmlReportFile.set(layout.buildDirectory.file("report/report.xml"))
         includes = listOf("com.memorizepi.*")
-        excludes = listOf("com.memorizepi.generated.*") //no need to test generated code
+        excludes = listOf("com.memorizepi.generated.*", "com.memorizepi.ui.*") //no need to test generated code
     }
 }
 
