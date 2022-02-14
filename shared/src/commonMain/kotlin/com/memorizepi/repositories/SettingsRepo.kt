@@ -39,5 +39,5 @@ class SettingsRepo(private val settings: Settings = Settings()) {
 
     var constant: Constant
         get() = Constant.values()[settings[constantTag] ?: Constant.PI.ordinal]
-        set(value) { save(sortMethodTag, value.ordinal) }
+        set(value) { save(constantTag, value.ordinal) }
 }
