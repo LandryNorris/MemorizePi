@@ -14,8 +14,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
 import com.arkivanov.decompose.value.MutableValue
-import com.example.memorizepi.components.GuessLogic
-import com.example.memorizepi.components.GuessState
+import com.memorizepi.components.GuessLogic
+import com.memorizepi.components.GuessState
 
 @Composable
 fun GuessScreen(component: GuessLogic) {

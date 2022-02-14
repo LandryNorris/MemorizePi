@@ -11,7 +11,7 @@ plugins {
 android {
     compileSdk = 32
     defaultConfig {
-        applicationId = "com.example.memorizepi.android"
+        applicationId = "com.memorizepi.android"
         minSdk = 21
         targetSdk = 32
         versionCode = 1

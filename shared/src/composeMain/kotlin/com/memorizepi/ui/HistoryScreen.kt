@@ -12,10 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.example.memorizepi.components.HistoryLogic
-import com.example.memorizepi.components.HistoryState
-import com.example.memorizepi.components.SortMethod
-import com.example.memorizepi.models.Round
+import com.memorizepi.components.HistoryLogic
+import com.memorizepi.components.HistoryState
+import com.memorizepi.components.SortMethod
+import com.memorizepi.models.Round
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable

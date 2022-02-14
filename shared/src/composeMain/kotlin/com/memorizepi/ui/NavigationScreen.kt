@@ -4,8 +4,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import com.arkivanov.decompose.extensions.compose.jetbrains.Children
 import com.arkivanov.decompose.extensions.compose.jetbrains.animation.child.crossfade
-import com.example.memorizepi.components.Navigation
-import com.example.memorizepi.components.NavigationComponent
+import com.memorizepi.components.Navigation
 import com.memorizepi.theme.AppTheme
 
 @Composable

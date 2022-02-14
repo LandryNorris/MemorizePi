@@ -8,7 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.memorizepi.components.MenuLogic
+import com.memorizepi.components.MenuLogic
 
 @Composable
 fun MenuScreen(menuComponent: MenuLogic) {

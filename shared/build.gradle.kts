@@ -107,14 +107,16 @@ tasks {
         isEnabled = true
         htmlReportDir.set(layout.buildDirectory.dir("report/html"))
         includes = listOf("com.memorizepi.*")
-        excludes = listOf("com.memorizepi.generated.*") //no need to test generated code
+        excludes = listOf("com.memorizepi.generated.*",
+            "com.memorizepi.ui.*") //no need to test generated code
     }
 
     koverMergedXmlReport {
         isEnabled = true
         xmlReportFile.set(layout.buildDirectory.file("report/report.xml"))
         includes = listOf("com.memorizepi.*")
-        excludes = listOf("com.memorizepi.generated.*", "com.memorizepi.ui.*") //no need to test generated code
+        excludes = listOf("com.memorizepi.generated.*",
+            "com.memorizepi.ui.*") //no need to test generated code
     }
 }
 
