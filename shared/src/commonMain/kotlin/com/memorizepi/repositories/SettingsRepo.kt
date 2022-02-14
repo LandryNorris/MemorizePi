@@ -35,9 +35,9 @@ class SettingsRepo(private val settings: Settings = Settings()) {
 
     var sortMethod: SortMethod
         get() = SortMethod.values()[settings[sortMethodTag] ?: SortMethod.NEWEST.ordinal]
-        set(value) { settings[sortMethodTag] = value.ordinal }
+        set(value) { save(sortMethodTag, value.ordinal) }
 
     var constant: Constant
         get() = Constant.values()[settings[constantTag] ?: Constant.PI.ordinal]
-        set(value) { settings[sortMethodTag] = value.ordinal }
+        set(value) { save(sortMethodTag, value.ordinal) }
 }
