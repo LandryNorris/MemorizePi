@@ -5,7 +5,8 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.memorizepi.components.GuessState
 import com.memorizepi.components.HistoryComponent
 import com.memorizepi.components.HistoryState
-import com.memorizepi.components.SortMethod
+import com.memorizepi.repositories.AppSettings
+import com.memorizepi.repositories.AppSettings.SortMethod
 import com.memorizepi.repositories.rounds.SqlRoundRepository
 import com.memorizepi.sql.Database
 import com.memorizepi.sql.DriverFactory

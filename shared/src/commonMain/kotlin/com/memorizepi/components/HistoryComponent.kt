@@ -2,6 +2,8 @@ package com.memorizepi.components
 
 import com.arkivanov.decompose.ComponentContext
 import com.memorizepi.models.Round
+import com.memorizepi.repositories.AppSettings
+import com.memorizepi.repositories.AppSettings.SortMethod
 import com.memorizepi.repositories.rounds.RoundRepository
 import kotlinx.coroutines.flow.*
 
@@ -49,13 +51,6 @@ class HistoryComponent(private val context: ComponentContext,
             it.copy(sortMethod = sortMethod)
         }
     }
-}
-
-enum class SortMethod {
-    NEWEST,
-    OLDEST,
-    BEST,
-    WORST
 }
 
 data class HistoryState(val sortMethod: SortMethod = SortMethod.NEWEST)

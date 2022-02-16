@@ -17,6 +17,7 @@ fun NavigationScreen(navigationComponent: Navigation) {
                     is Navigation.Child.Menu -> MenuScreen(child.component)
                     is Navigation.Child.Guess -> GuessScreen(child.component)
                     is Navigation.Child.History -> HistoryScreen(child.component)
+                    is Navigation.Child.Settings -> SettingsScreen(child.component)
                 }
             }
         }

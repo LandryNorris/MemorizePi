@@ -14,8 +14,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.memorizepi.components.HistoryLogic
 import com.memorizepi.components.HistoryState
-import com.memorizepi.components.SortMethod
 import com.memorizepi.models.Round
+import com.memorizepi.repositories.AppSettings
+import com.memorizepi.repositories.AppSettings.SortMethod
 import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable

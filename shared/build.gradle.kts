@@ -4,6 +4,7 @@ val decomposeVersion: String by project
 val sqlVersion: String by project
 val koinVersion: String by project
 val coroutinesVersion: String by project
+val settingsVersion: String by project
 
 plugins {
     kotlin("multiplatform")
@@ -42,6 +43,9 @@ kotlin {
                 implementation("com.arkivanov.decompose:decompose:$decomposeVersion")
                 implementation("com.squareup.sqldelight:coroutines-extensions:1.5.3")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
+                implementation("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
+                implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:$settingsVersion")
             }
         }
         val commonTest by getting {
@@ -50,6 +54,7 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
                 implementation("io.insert-koin:koin-test:$koinVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
+                implementation("com.russhwolf:multiplatform-settings-test:$settingsVersion")
             }
         }
 
