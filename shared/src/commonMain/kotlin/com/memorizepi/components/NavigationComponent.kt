@@ -8,7 +8,6 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.memorizepi.models.PI_DIGITS
 import com.memorizepi.repositories.SettingsRepo
 import com.memorizepi.repositories.rounds.RoundRepository
 import com.russhwolf.settings.Settings
@@ -42,22 +41,23 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
         when (config) {
             is Config.Menu -> Navigation.Child.Menu(mainLogic())
             is Config.Guess -> Navigation.Child.Guess(guessLogic(componentContext, config.digits))
-            is Config.History -> Navigation.Child.History(historyLogic(componentContext))
-            is Config.Settings -> Navigation.Child.Settings(settingsLogic(componentContext))
+            is Config.History -> Navigation.Child.History(
+                historyLogic(componentContext, config.settingsType))
+            is Config.Settings -> Navigation.Child.Settings(settingsLogic(componentContext, config.settingsType))
         }
 
     private fun mainLogic() =
         object: MenuLogic {
-            override fun goToGuess() {
-                router.push(Config.Guess(PI_DIGITS))
+            override fun goToGuess(digits: String) {
+                router.push(Config.Guess(digits))
             }
 
-            override fun goToHistory() {
-                router.push(Config.History)
+            override fun goToHistory(settingsType: SettingsType) {
+                router.push(Config.History(settingsType))
             }
 
-            override fun goToSettings() {
-                router.push(Config.Settings)
+            override fun goToSettings(settingsType: SettingsType) {
+                router.push(Config.Settings(settingsType))
             }
         }
 
@@ -66,10 +66,11 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
             router.pop()
         })
 
-    private fun historyLogic(context: ComponentContext) = HistoryComponent(context, roundRepository)
+    private fun historyLogic(context: ComponentContext, settingsType: SettingsType) =
+        HistoryComponent(context, roundRepository, SettingsRepo(settingsType.createSettings()))
 
-    private fun settingsLogic(context: ComponentContext) =
-        SettingsComponent(context, SettingsRepo())
+    private fun settingsLogic(context: ComponentContext, settingsType: SettingsType) =
+        SettingsComponent(context, SettingsRepo(settingsType.createSettings()))
 
     sealed class Config : Parcelable {
         @Parcelize
@@ -79,9 +80,9 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
         class Guess(val digits: String): Config()
 
         @Parcelize
-        object History: Config()
+        class History(val settingsType: SettingsType): Config()
 
         @Parcelize
-        object Settings: Config()
+        class Settings(val settingsType: SettingsType): Config()
     }
 }

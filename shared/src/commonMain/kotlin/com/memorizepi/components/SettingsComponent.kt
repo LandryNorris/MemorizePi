@@ -1,10 +1,14 @@
 package com.memorizepi.components
 
 import com.arkivanov.decompose.ComponentContext
+import com.arkivanov.essenty.parcelable.Parcelable
+import com.arkivanov.essenty.parcelable.Parcelize
 import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.AppSettings.Constant
 import com.memorizepi.repositories.AppSettings.SortMethod
 import com.memorizepi.repositories.SettingsRepo
+import com.russhwolf.settings.MockSettings
+import com.russhwolf.settings.Settings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -16,6 +20,18 @@ interface SettingsLogic {
     fun setSortMethod(sortMethod: SortMethod)
     fun setConstantExpanded(expanded: Boolean)
     fun setSortMethodExpanded(expanded: Boolean)
+}
+
+sealed class SettingsType: Parcelable {
+    abstract fun createSettings(): Settings
+    @Parcelize
+    object RealSettings: SettingsType(), Parcelable {
+        override fun createSettings() = Settings()
+    }
+    @Parcelize
+    object MockSettings: SettingsType(), Parcelable {
+        override fun createSettings() = MockSettings()
+    }
 }
 
 class SettingsComponent(private val context: ComponentContext,

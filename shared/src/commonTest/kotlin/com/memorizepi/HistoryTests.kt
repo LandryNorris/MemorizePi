@@ -7,9 +7,11 @@ import com.memorizepi.components.HistoryComponent
 import com.memorizepi.components.HistoryState
 import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.AppSettings.SortMethod
+import com.memorizepi.repositories.SettingsRepo
 import com.memorizepi.repositories.rounds.SqlRoundRepository
 import com.memorizepi.sql.Database
 import com.memorizepi.sql.DriverFactory
+import com.russhwolf.settings.MockSettings
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import kotlin.test.Test
@@ -22,6 +24,9 @@ class HistoryTests {
             SqlRoundRepository(Database(it)).clear() //Clear between test runs
         }
 
+    private val settingsRepo
+        get() = SettingsRepo(MockSettings())
+
     @Test
     fun testDefaultState() {
         assertEquals(SortMethod.NEWEST, HistoryState().sortMethod)
@@ -31,7 +36,7 @@ class HistoryTests {
     @Test
     fun testGetRoundHistoryNewest() = runBlocking {
         val repo = SqlRoundRepository(Database((driver)))
-        val historyComponent = HistoryComponent(context, repo).also {
+        val historyComponent = HistoryComponent(context, repo, settingsRepo).also {
             it.setSortMethod(SortMethod.NEWEST)
         }
         insertTestData(repo)
@@ -51,7 +56,7 @@ class HistoryTests {
     @Test
     fun testGetRoundHistoryOldest() = runBlocking {
         val repo = SqlRoundRepository(Database((driver)))
-        val historyComponent = HistoryComponent(context, repo).also {
+        val historyComponent = HistoryComponent(context, repo, settingsRepo).also {
             it.setSortMethod(SortMethod.OLDEST)
         }
         insertTestData(repo)
@@ -71,7 +76,7 @@ class HistoryTests {
     @Test
     fun testGetRoundHistoryBest() = runBlocking {
         val repo = SqlRoundRepository(Database((driver)))
-        val historyComponent = HistoryComponent(context, repo).also {
+        val historyComponent = HistoryComponent(context, repo, settingsRepo).also {
             it.setSortMethod(SortMethod.BEST)
         }
         insertTestData(repo)
@@ -91,7 +96,7 @@ class HistoryTests {
     @Test
     fun testGetRoundHistoryWorst() = runBlocking {
         val repo = SqlRoundRepository(Database((driver)))
-        val historyComponent = HistoryComponent(context, repo).also {
+        val historyComponent = HistoryComponent(context, repo, settingsRepo).also {
             it.setSortMethod(SortMethod.WORST)
         }
         insertTestData(repo)

@@ -4,6 +4,7 @@ import com.arkivanov.decompose.ComponentContext
 import com.memorizepi.models.Round
 import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.AppSettings.SortMethod
+import com.memorizepi.repositories.SettingsRepo
 import com.memorizepi.repositories.rounds.RoundRepository
 import kotlinx.coroutines.flow.*
 
@@ -14,9 +15,12 @@ interface HistoryLogic {
 }
 
 class HistoryComponent(private val context: ComponentContext,
-                       private val roundRepository: RoundRepository):
+                       roundRepository: RoundRepository,
+                       settingsRepository: SettingsRepo):
     HistoryLogic, ComponentContext by context {
-    private val mutableState = MutableStateFlow(HistoryState())
+
+    private val mutableState =
+        MutableStateFlow(HistoryState(sortMethod = settingsRepository.sortMethod))
     override val state: Flow<HistoryState>
         get() = mutableState
 
