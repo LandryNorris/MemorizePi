@@ -46,6 +46,7 @@ kotlin {
                 implementation("com.russhwolf:multiplatform-settings:$settingsVersion")
                 implementation("com.russhwolf:multiplatform-settings-no-arg:$settingsVersion")
                 implementation("com.russhwolf:multiplatform-settings-coroutines-native-mt:$settingsVersion")
+                implementation("com.russhwolf:multiplatform-settings-test:$settingsVersion")
             }
         }
         val commonTest by getting {
