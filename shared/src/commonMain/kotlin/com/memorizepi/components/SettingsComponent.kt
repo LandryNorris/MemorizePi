@@ -14,6 +14,8 @@ interface SettingsLogic {
 
     fun setConstant(constant: Constant)
     fun setSortMethod(sortMethod: SortMethod)
+    fun setConstantExpanded(expanded: Boolean)
+    fun setSortMethodExpanded(expanded: Boolean)
 }
 
 class SettingsComponent(private val context: ComponentContext,
@@ -37,9 +39,22 @@ class SettingsComponent(private val context: ComponentContext,
             it.copy(sortMethod = sortMethod)
         }
     }
+
+    override fun setConstantExpanded(expanded: Boolean) {
+        state.update { it.copy(isConstantBoxExpanded = expanded) }
+    }
+
+    override fun setSortMethodExpanded(expanded: Boolean) {
+        state.update { it.copy(isSortMethodBoxExpanded = expanded) }
+    }
 }
 
 data class SettingsState(val constant: Constant = Constant.PI,
                          val constants: List<Constant> =
                              listOf(Constant.PI, Constant.E, Constant.SQRT2),
-                         val sortMethod: SortMethod = SortMethod.NEWEST)
+                         val sortMethod: SortMethod = SortMethod.NEWEST,
+                         val sortMethods: List<SortMethod> =
+                             listOf(SortMethod.NEWEST, SortMethod.OLDEST,
+                                 SortMethod.BEST, SortMethod.WORST),
+                         val isConstantBoxExpanded: Boolean = false,
+                         val isSortMethodBoxExpanded: Boolean = false)

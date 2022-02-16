@@ -23,5 +23,9 @@ fun MenuScreen(menuComponent: MenuLogic) {
             content = { Text("History") },
             onClick = menuComponent::goToHistory
         )
+        Button(
+            content = { Text("Settings") },
+            onClick = menuComponent::goToSettings
+        )
     }
 }
