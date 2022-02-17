@@ -15,7 +15,7 @@ object DefaultRoundRepository: RoundRepository {
     override fun clear() {}
 
     override val rounds = MutableSharedFlow<List<Round>>()
-    override val topScore: Int = 0
+    override fun topScore(constant: AppSettings.Constant): Int = 0
 }
 
 class GuessComponentTest {

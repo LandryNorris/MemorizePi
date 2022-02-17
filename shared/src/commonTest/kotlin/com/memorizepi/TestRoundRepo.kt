@@ -23,7 +23,7 @@ class TestRoundRepo {
             override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
-            override val topScore: Int = 5
+            override fun topScore(constant: AppSettings.Constant): Int = 5
         }
 
         val component = GuessComponent(context, AppSettings.Constant.PI, repo) {}
@@ -38,7 +38,7 @@ class TestRoundRepo {
             override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
-            override val topScore: Int = 3
+            override fun topScore(constant: AppSettings.Constant): Int = 3
         }
 
         val component = GuessComponent(context, AppSettings.Constant.PI, repo) {}
@@ -78,7 +78,7 @@ class TestRoundRepo {
             override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
-            override val topScore: Int = 3
+            override fun topScore(constant: AppSettings.Constant): Int = 3
         }
 
         val component = GuessComponent(context, AppSettings.Constant.PI, repo) {}

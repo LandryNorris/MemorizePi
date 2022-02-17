@@ -4,7 +4,6 @@ import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
-import com.memorizepi.models.PI_DIGITS
 import com.memorizepi.models.getDigits
 import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.rounds.RoundRepository
@@ -62,7 +61,7 @@ class GuessComponent(private val context: ComponentContext,
         }
     }
 
-    private fun initGame() = GuessState(bestScore = roundRepository.topScore,
+    private fun initGame() = GuessState(bestScore = roundRepository.topScore(constant),
         gameOver = false, constant = constant)
 
     private fun onGameOver() {

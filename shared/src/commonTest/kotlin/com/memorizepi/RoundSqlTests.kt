@@ -33,42 +33,67 @@ class RoundSqlTests {
 
     @Test
     fun testGetBestScore() = runBlocking {
+        val constant = AppSettings.Constant.SQRT2
         val repo = SqlRoundRepository(Database(driver))
-        assertEquals(0,  repo.topScore)
+        assertEquals(0,  repo.topScore(constant))
 
         val startTime = 772894892L
-        val gameState = GuessState(startTime = startTime, currentScore = 17)
+        val gameState = GuessState(startTime = startTime, currentScore = 17, constant = constant)
         repo.saveGame(gameState)
 
-        assertEquals(17, repo.topScore)
+        assertEquals(17, repo.topScore(constant))
     }
 
     @Test
     fun testGetScores() = runBlocking {
+        val constant = AppSettings.Constant.E
         val repo = SqlRoundRepository(Database(driver))
-        assertEquals(0,  repo.topScore)
+        assertEquals(0,  repo.topScore(constant))
 
         val startTime = 772894892L
-        val gameState = GuessState(startTime = startTime, currentScore = 17)
+        val gameState = GuessState(startTime = startTime, currentScore = 17, constant = constant)
         repo.saveGame(gameState)
 
-        val scores = repo.scores.first()
+        val scores = repo.scores(constant).first()
         assertEquals(1, scores.size)
         assertEquals(17, scores.first())
     }
 
     @Test
-    fun testGetTopScores() = runBlocking {
+    fun testConstantScoresAreIndependent() = runBlocking {
         val repo = SqlRoundRepository(Database(driver))
 
         val startTime = 772894892L
-        repo.saveGame(GuessState(startTime = startTime, currentScore = 17))
+        repo.saveGame(GuessState(startTime = startTime, currentScore = 17,
+            constant = AppSettings.Constant.E))
 
-        val topScores = repo.topScores(2).first()
+        val eTopScores = repo.topScores(AppSettings.Constant.E, 2).first()
+        assertEquals(1, eTopScores.size) //there is only one item
+        assertEquals(17, eTopScores.first())
+
+        val piTopScores = repo.topScores(AppSettings.Constant.PI, 2).first()
+        assertEquals(0, piTopScores.size) //there is only one item
+
+        repo.saveGame(GuessState(startTime = startTime+10000, currentScore = 15,
+            constant = AppSettings.Constant.SQRT2))
+        val sqrt2Scores = repo.topScores(AppSettings.Constant.SQRT2, 2).first()
+        assertEquals(1, sqrt2Scores.size)
+        assertEquals(15, sqrt2Scores.first())
+    }
+
+    @Test
+    fun testGetTopScores() = runBlocking {
+        val constant = AppSettings.Constant.E
+        val repo = SqlRoundRepository(Database(driver))
+
+        val startTime = 772894892L
+        repo.saveGame(GuessState(startTime = startTime, currentScore = 17, constant = constant))
+
+        val topScores = repo.topScores(constant, 2).first()
         assertEquals(1, topScores.size) //there is only one item
 
-        repo.saveGame(GuessState(startTime = startTime, currentScore = 12))
-        val topScores2 = repo.topScores(2).first()
+        repo.saveGame(GuessState(startTime = startTime, currentScore = 12, constant = constant))
+        val topScores2 = repo.topScores(constant, 2).first()
         assertEquals(2, topScores2.size) //there is only one item
     }
 

@@ -5,11 +5,14 @@ SELECT * FROM Round;
 selectAllScores:
 SELECT score FROM Round;
 
+selectScores:
+SELECT score FROM Round WHERE constant IS ?;
+
 selectTopScores:
-SELECT score FROM Round LIMIT ?;
+SELECT score FROM Round WHERE constant IS ? LIMIT ?;
 
 getTopScore:
-SELECT MAX(score) FROM Round;
+SELECT MAX(score) FROM Round WHERE constant IS ?;
 
 clearDB:
 DELETE FROM Round;

@@ -25,7 +25,7 @@ class NavigationTest {
                 override fun clear() {}
 
                 override val rounds = MutableSharedFlow<List<Round>>()
-                override val topScore = 0
+                override fun topScore(constant: AppSettings.Constant) = 0
             }
         }
     }

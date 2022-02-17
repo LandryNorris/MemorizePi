@@ -2,6 +2,7 @@ package com.memorizepi.sql
 
 import com.memorizepi.models.Round
 import com.memorizepi.generated.AppDatabase
+import com.memorizepi.repositories.AppSettings
 import com.squareup.sqldelight.EnumColumnAdapter
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow
@@ -26,11 +27,11 @@ class Database(driver: SqlDriver) {
     val rounds
         get() = queries.selectAll().asFlow().mapToList()
 
-    val scores
-        get() = queries.selectAllScores().asFlow().mapToList()
+    fun scores(constant: AppSettings.Constant) = queries.selectScores(constant).asFlow().mapToList()
 
-    val topScore
-        get() = queries.getTopScore().executeAsOne().MAX?.toInt() ?: 0
+    fun topScore(constant: AppSettings.Constant) =
+        queries.getTopScore(constant).executeAsOne().MAX?.toInt() ?: 0
 
-    fun topScores(count: Long) = queries.selectTopScores(count).asFlow().mapToList()
+    fun topScores(constant: AppSettings.Constant, count: Long) =
+        queries.selectTopScores(constant, count).asFlow().mapToList()
 }
