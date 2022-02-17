@@ -9,7 +9,7 @@ import com.memorizepi.repositories.rounds.RoundRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlin.test.*
 
-object DefaultRoundRepository: RoundRepository() {
+object DefaultRoundRepository: RoundRepository {
     override fun saveGame(state: GuessState) {}
     override fun clear() {}
 

@@ -17,7 +17,7 @@ class TestRoundRepo {
 
     @Test
     fun testStartingBestScore() {
-        val repo = object: RoundRepository() {
+        val repo = object: RoundRepository {
             override fun saveGame(state: GuessState) {}
             override fun clear() {}
 
@@ -33,7 +33,7 @@ class TestRoundRepo {
 
     @Test
     fun testBestScoreIncreasesAsYouBeatIt() {
-        val repo = object: RoundRepository() {
+        val repo = object: RoundRepository {
             override fun saveGame(state: GuessState) {}
             override fun clear() {}
 
@@ -72,7 +72,7 @@ class TestRoundRepo {
     @Test
     fun testSaveGameCalled() {
         var saveGameCalled = false
-        val repo = object: RoundRepository() {
+        val repo = object: RoundRepository {
             override fun saveGame(state: GuessState) {
                 saveGameCalled = true
             }

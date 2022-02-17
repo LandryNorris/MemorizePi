@@ -20,7 +20,7 @@ class NavigationTest {
     private val context = DefaultComponentContext(LifecycleRegistry())
     private val koinModule = module {
         single<RoundRepository> {
-            object: RoundRepository() {
+            object: RoundRepository {
                 override fun saveGame(state: GuessState) {}
                 override fun clear() {}
 
