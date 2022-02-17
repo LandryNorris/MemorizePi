@@ -1,0 +1,3 @@
+import com.memorizepi.repositories.AppSettings.Constant;
+
+ALTER TABLE Round ADD COLUMN constant TEXT AS Constant DEFAULT "PI";

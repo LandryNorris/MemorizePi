@@ -1,9 +1,3 @@
-CREATE TABLE Round (
-    id INTEGER NOT NULL PRIMARY KEY,
-    score INTEGER AS Int NOT NULL,
-    timestamp INTEGER NOT NULL,
-    secondsInGame INTEGER NOT NULL
-);
 
 selectAll:
 SELECT * FROM Round;
@@ -11,15 +5,18 @@ SELECT * FROM Round;
 selectAllScores:
 SELECT score FROM Round;
 
+selectScores:
+SELECT score FROM Round WHERE constant IS ?;
+
 selectTopScores:
-SELECT score FROM Round LIMIT ?;
+SELECT score FROM Round WHERE constant IS ? LIMIT ?;
 
 getTopScore:
-SELECT MAX(score) FROM Round;
+SELECT MAX(score) FROM Round WHERE constant IS ?;
 
 clearDB:
 DELETE FROM Round;
 
 insert:
-INSERT INTO Round(score, timestamp, secondsInGame) VALUES (?, ?, ?);
+INSERT INTO Round(score, timestamp, secondsInGame, constant) VALUES (?, ?, ?, ?);
 

@@ -50,10 +50,14 @@ fun HistoryPreview() {
 
         override val rounds = MutableStateFlow(
             listOf(
-                Round(10L, 100, 1600000000000, 30L),
-                Round(10L, 7, 1600000002000, 30L),
-                Round(10L, 50, 1600007392010, 30L),
-                Round(10L, 25, 1607390000638, 30L),
+                Round(10L, 100, 1600000000000,
+                    30L, AppSettings.Constant.PI),
+                Round(10L, 7, 1600000002000,
+                    30L, AppSettings.Constant.PI),
+                Round(10L, 50, 1600007392010,
+                    30L, AppSettings.Constant.PI),
+                Round(10L, 25, 1607390000638,
+                    30L, AppSettings.Constant.PI),
             )
         )
 

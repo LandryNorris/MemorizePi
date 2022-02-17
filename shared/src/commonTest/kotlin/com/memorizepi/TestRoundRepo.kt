@@ -5,6 +5,7 @@ import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.memorizepi.components.GuessComponent
 import com.memorizepi.components.GuessState
 import com.memorizepi.models.Round
+import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.rounds.RoundRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlin.test.Test
@@ -22,11 +23,10 @@ class TestRoundRepo {
             override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
-            override val topScore: Int = 5
+            override fun topScore(constant: AppSettings.Constant): Int = 5
         }
 
-        val digits = "123456"
-        val component = GuessComponent(context, digits, repo) {}
+        val component = GuessComponent(context, AppSettings.Constant.PI, repo) {}
 
         assertEquals(5, component.state.value.bestScore)
     }
@@ -38,24 +38,23 @@ class TestRoundRepo {
             override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
-            override val topScore: Int = 3
+            override fun topScore(constant: AppSettings.Constant): Int = 3
         }
 
-        val digits = "12345678"
-        val component = GuessComponent(context, digits, repo) {}
+        val component = GuessComponent(context, AppSettings.Constant.PI, repo) {}
 
-        assertEquals(3, component.state.value.bestScore)
-
-        component.guessDigit('1')
-        assertEquals(3, component.state.value.bestScore)
-
-        component.guessDigit('2')
         assertEquals(3, component.state.value.bestScore)
 
         component.guessDigit('3')
         assertEquals(3, component.state.value.bestScore)
 
+        component.guessDigit('1')
+        assertEquals(3, component.state.value.bestScore)
+
         component.guessDigit('4')
+        assertEquals(3, component.state.value.bestScore)
+
+        component.guessDigit('1')
         assertEquals(4, component.state.value.bestScore)
 
         component.guessDigit('5')
@@ -65,7 +64,7 @@ class TestRoundRepo {
         component.guessDigit('0')
         assertEquals(5, component.state.value.bestScore)
 
-        component.guessDigit('6')
+        component.guessDigit('9')
         assertEquals(6, component.state.value.bestScore)
     }
 
@@ -79,16 +78,15 @@ class TestRoundRepo {
             override fun clear() {}
 
             override val rounds = MutableSharedFlow<List<Round>>()
-            override val topScore: Int = 3
+            override fun topScore(constant: AppSettings.Constant): Int = 3
         }
 
-        val digits = "184904532"
-        val component = GuessComponent(context, digits, repo) {}
+        val component = GuessComponent(context, AppSettings.Constant.PI, repo) {}
 
-        component.guessDigit('1')
+        component.guessDigit('3')
         assertFalse(saveGameCalled)
 
-        component.guessDigit('8')
+        component.guessDigit('1')
         assertFalse(saveGameCalled)
 
         //wrong digit
