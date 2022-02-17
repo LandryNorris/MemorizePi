@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 
-class SqlRoundRepository(private val database: Database): RoundRepository() {
+class SqlRoundRepository(private val database: Database): RoundRepository {
     override fun saveGame(state: GuessState) {
         val now = Clock.System.now()
         val secondsInGame = (now - Instant.fromEpochMilliseconds(state.startTime)).inWholeSeconds

@@ -3,7 +3,6 @@ package com.memorizepi.components
 import com.arkivanov.decompose.ComponentContext
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
-import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.AppSettings.Constant
 import com.memorizepi.repositories.AppSettings.SortMethod
 import com.memorizepi.repositories.SettingsRepo

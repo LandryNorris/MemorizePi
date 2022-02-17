@@ -2,11 +2,14 @@ package com.memorizepi.components
 
 import com.arkivanov.decompose.ComponentContext
 import com.memorizepi.models.Round
-import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.AppSettings.SortMethod
 import com.memorizepi.repositories.SettingsRepo
 import com.memorizepi.repositories.rounds.RoundRepository
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 
 interface HistoryLogic {
     val state: Flow<HistoryState>

@@ -7,8 +7,8 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 
 class Database(driver: SqlDriver) {
-    private val database = AppDatabase(driver)
-    private val queries = database.roundQueries
+    private val appDatabase = AppDatabase(driver)
+    private val queries = appDatabase.roundQueries
 
     fun saveRound(round: Round) {
         queries.insert(round.score, round.timestamp, round.secondsInRound)
