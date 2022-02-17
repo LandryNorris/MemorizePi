@@ -8,8 +8,8 @@ import com.memorizepi.components.Navigation
 import com.memorizepi.components.NavigationComponent
 import com.memorizepi.components.SettingsType
 import com.memorizepi.models.Round
+import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.rounds.RoundRepository
-import com.russhwolf.settings.MockSettings
 import kotlinx.coroutines.flow.MutableSharedFlow
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -49,7 +49,7 @@ class NavigationTest {
     @Test
     fun testNavigateToGuess() {
         val navComponent = NavigationComponent(context)
-        val config = NavigationComponent.Config.Guess("123456")
+        val config = NavigationComponent.Config.Guess(AppSettings.Constant.PI)
         navComponent.router.push(config)
         assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Guess)
     }
@@ -75,7 +75,7 @@ class NavigationTest {
         val navComponent = NavigationComponent(context)
         val menuConfig = navComponent.router.state.value.activeChild.instance
                 as? Navigation.Child.Menu
-        menuConfig?.component?.goToGuess()
+        menuConfig?.component?.goToGuess(SettingsType.MockSettings)
         assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Guess)
     }
 
@@ -102,7 +102,7 @@ class NavigationTest {
         val navComponent = NavigationComponent(context)
         val menuConfig = navComponent.router.state.value.activeChild.instance
                 as? Navigation.Child.Menu
-        menuConfig?.component?.goToGuess()
+        menuConfig?.component?.goToGuess(SettingsType.MockSettings)
         val guessConfig = navComponent.router.state.value.activeChild.instance
                 as? Navigation.Child.Guess
         guessConfig?.component?.returnToMenu()

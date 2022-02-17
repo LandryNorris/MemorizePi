@@ -2,16 +2,21 @@ package com.memorizepi.sql
 
 import com.memorizepi.models.Round
 import com.memorizepi.generated.AppDatabase
+import com.squareup.sqldelight.EnumColumnAdapter
 import com.squareup.sqldelight.db.SqlDriver
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 
 class Database(driver: SqlDriver) {
-    private val appDatabase = AppDatabase(driver)
+    private val appDatabase = AppDatabase(driver,
+        RoundAdapter = com.memorizepi.generated.Round.Adapter(
+            constantAdapter = EnumColumnAdapter()
+        ))
+
     private val queries = appDatabase.roundQueries
 
     fun saveRound(round: Round) {
-        queries.insert(round.score, round.timestamp, round.secondsInRound)
+        queries.insert(round.score, round.timestamp, round.secondsInRound, round.constant)
     }
 
     fun clearDB() {

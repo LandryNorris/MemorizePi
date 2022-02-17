@@ -158,5 +158,7 @@ detekt {
 sqldelight {
     database("AppDatabase") {
         packageName = "com.memorizepi.generated"
+        deriveSchemaFromMigrations = true
+        verifyMigrations = true
     }
 }

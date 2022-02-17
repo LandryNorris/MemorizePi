@@ -8,9 +8,9 @@ import com.arkivanov.decompose.router.router
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.essenty.parcelable.Parcelable
 import com.arkivanov.essenty.parcelable.Parcelize
+import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.SettingsRepo
 import com.memorizepi.repositories.rounds.RoundRepository
-import com.russhwolf.settings.Settings
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
@@ -40,7 +40,7 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
     private fun createChild(config: Config, componentContext: ComponentContext): Navigation.Child =
         when (config) {
             is Config.Menu -> Navigation.Child.Menu(mainLogic())
-            is Config.Guess -> Navigation.Child.Guess(guessLogic(componentContext, config.digits))
+            is Config.Guess -> Navigation.Child.Guess(guessLogic(componentContext, config.constant))
             is Config.History -> Navigation.Child.History(
                 historyLogic(componentContext, config.settingsType))
             is Config.Settings -> Navigation.Child.Settings(settingsLogic(componentContext, config.settingsType))
@@ -48,8 +48,9 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
 
     private fun mainLogic() =
         object: MenuLogic {
-            override fun goToGuess(digits: String) {
-                router.push(Config.Guess(digits))
+            override fun goToGuess(settings: SettingsType) {
+                val settingsRepo = SettingsRepo(settings.createSettings())
+                router.push(Config.Guess(settingsRepo.constant))
             }
 
             override fun goToHistory(settingsType: SettingsType) {
@@ -61,8 +62,8 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
             }
         }
 
-    private fun guessLogic(context: ComponentContext, digits: String) =
-        GuessComponent(context, digits, roundRepository, returnToMenu = {
+    private fun guessLogic(context: ComponentContext, constant: AppSettings.Constant) =
+        GuessComponent(context, constant, roundRepository, returnToMenu = {
             router.pop()
         })
 
@@ -77,7 +78,7 @@ class NavigationComponent(context: ComponentContext): Navigation, KoinComponent,
         object Menu: Config()
 
         @Parcelize
-        class Guess(val digits: String): Config()
+        class Guess(val constant: AppSettings.Constant): Config()
 
         @Parcelize
         class History(val settingsType: SettingsType): Config()

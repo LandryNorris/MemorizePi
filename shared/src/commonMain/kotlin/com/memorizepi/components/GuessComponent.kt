@@ -5,6 +5,8 @@ import com.arkivanov.decompose.value.MutableValue
 import com.arkivanov.decompose.value.Value
 import com.arkivanov.decompose.value.reduce
 import com.memorizepi.models.PI_DIGITS
+import com.memorizepi.models.getDigits
+import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.rounds.RoundRepository
 import kotlinx.datetime.Clock
 
@@ -16,7 +18,8 @@ interface GuessLogic {
     fun retry() {}
 }
 
-class GuessComponent(private val context: ComponentContext, private val digits: String,
+class GuessComponent(private val context: ComponentContext,
+                     private val constant: AppSettings.Constant,
                      private val roundRepository: RoundRepository,
                      private val returnToMenu: () -> Unit):
     GuessLogic, ComponentContext by context {
@@ -59,8 +62,8 @@ class GuessComponent(private val context: ComponentContext, private val digits: 
         }
     }
 
-    private fun initGame() = GuessState(digits = digits, bestScore = roundRepository.topScore,
-        gameOver = false)
+    private fun initGame() = GuessState(bestScore = roundRepository.topScore,
+        gameOver = false, constant = constant)
 
     private fun onGameOver() {
         mutableState.reduce {
@@ -71,7 +74,7 @@ class GuessComponent(private val context: ComponentContext, private val digits: 
 }
 
 data class GuessState(
-    val digits: String = PI_DIGITS,
+    val constant: AppSettings.Constant = AppSettings.Constant.PI,
     val numIncorrectAllowed: Int = 3,
     val startTime: Long = 0L,
     val currentScore: Int = 0,
@@ -79,6 +82,8 @@ data class GuessState(
     val numIncorrect: Int = 0,
     val gameOver: Boolean = false
 ) {
+    private val digits: String = getDigits(constant)
+
     val currentDigit: Char
         get() = digits[currentScore]
 

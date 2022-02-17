@@ -1,0 +1,6 @@
+CREATE TABLE Round (
+    id INTEGER NOT NULL PRIMARY KEY,
+    score INTEGER AS Int NOT NULL,
+    timestamp INTEGER NOT NULL,
+    secondsInGame INTEGER NOT NULL
+);

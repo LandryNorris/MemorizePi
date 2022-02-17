@@ -114,11 +114,11 @@ class HistoryTests {
     }
 
     private fun insertTestData(repo: SqlRoundRepository) {
-        repo.saveGame(GuessState(digits = "1289374", startTime = 78929473L, currentScore = 15))
-        repo.saveGame(GuessState(digits = "1289374", startTime = 98290302L, currentScore = 50))
-        repo.saveGame(GuessState(digits = "1289374", startTime = 75832902L, currentScore = 7))
-        repo.saveGame(GuessState(digits = "1289374", startTime = 91038853L, currentScore = 100))
-        repo.saveGame(GuessState(digits = "1289374", startTime = 10294458L, currentScore = 17))
-        repo.saveGame(GuessState(digits = "1289374", startTime = 28910384L, currentScore = 15))
+        repo.saveGame(GuessState(startTime = 78929473L, currentScore = 15))
+        repo.saveGame(GuessState(startTime = 98290302L, currentScore = 50))
+        repo.saveGame(GuessState(startTime = 75832902L, currentScore = 7))
+        repo.saveGame(GuessState(startTime = 91038853L, currentScore = 100))
+        repo.saveGame(GuessState(startTime = 10294458L, currentScore = 17))
+        repo.saveGame(GuessState(startTime = 28910384L, currentScore = 15))
     }
 }

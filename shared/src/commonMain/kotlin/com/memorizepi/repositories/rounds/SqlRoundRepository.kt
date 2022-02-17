@@ -13,7 +13,8 @@ class SqlRoundRepository(private val database: Database): RoundRepository {
     override fun saveGame(state: GuessState) {
         val now = Clock.System.now()
         val secondsInGame = (now - Instant.fromEpochMilliseconds(state.startTime)).inWholeSeconds
-        database.saveRound(Round(-1L, state.currentScore, state.startTime, secondsInGame))
+        database.saveRound(Round(-1L, state.currentScore, state.startTime, secondsInGame,
+            state.constant))
     }
 
     override fun clear() {
