@@ -1,16 +1,16 @@
 package com.memorizepi.components
 
 import com.arkivanov.decompose.ComponentContext
-import com.arkivanov.decompose.value.MutableValue
-import com.arkivanov.decompose.value.Value
-import com.arkivanov.decompose.value.reduce
 import com.memorizepi.models.getDigits
 import com.memorizepi.repositories.AppSettings
 import com.memorizepi.repositories.rounds.RoundRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.datetime.Clock
 
 interface GuessLogic {
-    val state: Value<GuessState>
+    val state: Flow<GuessState>
 
     fun guessDigit(digit: Char) {}
     fun returnToMenu() {}
@@ -22,8 +22,8 @@ class GuessComponent(private val context: ComponentContext,
                      private val roundRepository: RoundRepository,
                      private val returnToMenu: () -> Unit):
     GuessLogic, ComponentContext by context {
-    private val mutableState = MutableValue(initGame())
-    override val state: Value<GuessState> = mutableState
+    private val mutableState = MutableStateFlow(initGame())
+    override val state = mutableState
 
     private val clock = Clock.System
 
@@ -32,18 +32,18 @@ class GuessComponent(private val context: ComponentContext,
         val currentDigit = state.value.currentDigit
 
         //handle start time.
-        if(state.value.startTime == 0L) mutableState.reduce {
+        if(state.value.startTime == 0L) mutableState.update {
             it.copy(startTime = clock.now().toEpochMilliseconds())
         }
 
         //check guess
         if(digit == currentDigit) {
-            mutableState.reduce {
+            mutableState.update {
                 val newScore = it.currentScore+1
                 it.copy(currentScore = newScore, bestScore = maxOf(it.bestScore, newScore))
             }
         } else { //incorrect guess
-            mutableState.reduce {
+            mutableState.update {
                 it.copy(numIncorrect = it.numIncorrect+1)
             }
 
@@ -56,7 +56,7 @@ class GuessComponent(private val context: ComponentContext,
     override fun returnToMenu() = returnToMenu.invoke()
 
     override fun retry() {
-        mutableState.reduce {
+        mutableState.update {
             initGame()
         }
     }
@@ -65,7 +65,7 @@ class GuessComponent(private val context: ComponentContext,
         gameOver = false, constant = constant)
 
     private fun onGameOver() {
-        mutableState.reduce {
+        mutableState.update {
             it.copy(gameOver = true)
         }
         roundRepository.saveGame(state.value)
