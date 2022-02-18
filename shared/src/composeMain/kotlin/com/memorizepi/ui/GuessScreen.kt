@@ -5,6 +5,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,14 +13,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
-import com.arkivanov.decompose.extensions.compose.jetbrains.subscribeAsState
-import com.arkivanov.decompose.value.MutableValue
 import com.memorizepi.components.GuessLogic
 import com.memorizepi.components.GuessState
+import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun GuessScreen(component: GuessLogic) {
-    val state by component.state.subscribeAsState()
+    val state by component.state.collectAsState(GuessState())
 
     if(state.gameOver) {
         GameOverPopup(returnToMenu = component::returnToMenu,
@@ -107,7 +107,7 @@ fun GuessScreen(component: GuessLogic) {
 fun GuessPreview() {
     MaterialTheme {
         GuessScreen(object: GuessLogic {
-            override val state = MutableValue(GuessState(currentScore = 7, numIncorrect = 2))
+            override val state = MutableStateFlow(GuessState(currentScore = 7, numIncorrect = 2))
         })
     }
 }
@@ -117,7 +117,8 @@ fun GuessPreview() {
 fun GuessPreview2() {
     MaterialTheme {
         GuessScreen(object: GuessLogic {
-            override val state = MutableValue(GuessState(currentScore = 7, numIncorrect = 3, gameOver = true))
+            override val state =
+                MutableStateFlow(GuessState(currentScore = 7, numIncorrect = 3, gameOver = true))
         })
     }
 }
