@@ -1,4 +1,5 @@
-import org.jetbrains.compose.ComposeBuildConfig.composeVersion
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
 val decomposeVersion: String by project
 val sqlVersion: String by project
@@ -67,8 +68,7 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.material)
                 implementation(compose.materialIconsExtended)
-                implementation(compose.preview)
-                implementation(compose.uiTooling)
+                implementation(compose.ui)
                 implementation("com.arkivanov.decompose:extensions-compose-jetbrains:$decomposeVersion")
             }
         }
@@ -89,8 +89,8 @@ kotlin {
             }
         }
         val iosMain by getting {
-            dependsOn(commonMain)
-            //dependsOn(composeMain) //once compose supports iOS
+            //dependsOn(commonMain)
+            dependsOn(composeMain) //once compose supports iOS
 
             dependencies {
                 implementation("com.squareup.sqldelight:native-driver:$sqlVersion")
@@ -133,11 +133,11 @@ kover {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = 33
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
-        targetSdk = 32
+        targetSdk = 33
     }
 
     buildFeatures {
@@ -147,6 +147,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.1.0"
     }
+}
+dependencies {
+    implementation("androidx.compose.ui:ui-tooling-preview:1.1.1")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.1.1")
 }
 
 detekt {
@@ -160,5 +164,13 @@ sqldelight {
         packageName = "com.memorizepi.generated"
         deriveSchemaFromMigrations = true
         verifyMigrations = true
+    }
+}
+
+kotlin {
+    targets.withType<KotlinNativeTarget> {
+        binaries.withType<TestExecutable> {
+            freeCompilerArgs += listOf("-linker-option", "-framework", "-linker-option", "Metal")
+        }
     }
 }

@@ -1,7 +1,8 @@
 package com.memorizepi
 
 import com.arkivanov.decompose.DefaultComponentContext
-import com.arkivanov.decompose.router.push
+import com.arkivanov.decompose.router.stack.bringToFront
+import com.arkivanov.decompose.router.stack.push
 import com.arkivanov.essenty.lifecycle.LifecycleRegistry
 import com.memorizepi.components.GuessState
 import com.memorizepi.components.Navigation
@@ -43,69 +44,69 @@ class NavigationTest {
     @Test
     fun testInitialRoute() {
         val navComponent = NavigationComponent(context)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Menu)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.Menu)
     }
 
     @Test
     fun testNavigateToGuess() {
         val navComponent = NavigationComponent(context)
         val config = NavigationComponent.Config.Guess(AppSettings.Constant.PI)
-        navComponent.router.push(config)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Guess)
+        navComponent.navigation.push(config)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.Guess)
     }
 
     @Test
     fun testNavigateToHistory() {
         val navComponent = NavigationComponent(context)
         val config = NavigationComponent.Config.History(SettingsType.MockSettings)
-        navComponent.router.push(config)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.History)
+        navComponent.navigation.bringToFront(config)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.History)
     }
 
     @Test
     fun testNavigateToSettings() {
         val navComponent = NavigationComponent(context)
         val config = NavigationComponent.Config.Settings(SettingsType.MockSettings)
-        navComponent.router.push(config)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Settings)
+        navComponent.navigation.push(config)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.Settings)
     }
 
     @Test
     fun testNavigateToGuessViaMenuLogic() {
         val navComponent = NavigationComponent(context)
-        val menuConfig = navComponent.router.state.value.activeChild.instance
+        val menuConfig = navComponent.childStack.value.active.instance
                 as? Navigation.Child.Menu
         menuConfig?.component?.goToGuess(SettingsType.MockSettings)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Guess)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.Guess)
     }
 
     @Test
     fun testNavigateToSettingsViaMenuLogic() {
         val navComponent = NavigationComponent(context)
-        val menuConfig = navComponent.router.state.value.activeChild.instance
+        val menuConfig = navComponent.childStack.value.active.instance
                 as? Navigation.Child.Menu
         menuConfig?.component?.goToSettings(SettingsType.MockSettings)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Settings)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.Settings)
     }
 
     @Test
     fun testNavigateToHistoryViaMenuLogic() {
         val navComponent = NavigationComponent(context)
-        val menuConfig = navComponent.router.state.value.activeChild.instance
+        val menuConfig = navComponent.childStack.value.active.instance
                 as? Navigation.Child.Menu
         menuConfig?.component?.goToHistory(SettingsType.MockSettings)
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.History)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.History)
     }
 
     @Test
     fun testReturnToMenuFromGuess() {
         val navComponent = NavigationComponent(context)
-        val menuConfig = navComponent.router.state.value.activeChild.instance
+        val menuConfig = navComponent.childStack.value.active.instance
                 as? Navigation.Child.Menu
         menuConfig?.component?.goToGuess(SettingsType.MockSettings)
-        val guessConfig = navComponent.router.state.value.activeChild.instance
+        val guessConfig = navComponent.childStack.value.active.instance
                 as? Navigation.Child.Guess
         guessConfig?.component?.returnToMenu()
-        assertTrue(navComponent.routerState.value.activeChild.instance is Navigation.Child.Menu)
+        assertTrue(navComponent.childStack.value.active.instance is Navigation.Child.Menu)
     }
 }

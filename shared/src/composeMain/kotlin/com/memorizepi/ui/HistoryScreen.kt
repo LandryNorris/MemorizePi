@@ -10,14 +10,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.memorizepi.components.HistoryLogic
 import com.memorizepi.components.HistoryState
-import com.memorizepi.models.Round
-import com.memorizepi.repositories.AppSettings
-import com.memorizepi.repositories.AppSettings.SortMethod
-import kotlinx.coroutines.flow.MutableStateFlow
 
 @Composable
 fun HistoryScreen(logic: HistoryLogic) {
@@ -38,29 +33,4 @@ fun HistoryScreen(logic: HistoryLogic) {
             }
         }
     }
-}
-
-@Preview(showSystemUi = true)
-@Composable
-fun HistoryPreview() {
-    HistoryScreen(logic = object : HistoryLogic {
-        override val state = MutableStateFlow(
-            HistoryState()
-        )
-
-        override val rounds = MutableStateFlow(
-            listOf(
-                Round(10L, 100, 1600000000000,
-                    30L, AppSettings.Constant.PI),
-                Round(10L, 7, 1600000002000,
-                    30L, AppSettings.Constant.PI),
-                Round(10L, 50, 1600007392010,
-                    30L, AppSettings.Constant.PI),
-                Round(10L, 25, 1607390000638,
-                    30L, AppSettings.Constant.PI),
-            )
-        )
-
-        override fun setSortMethod(sortMethod: SortMethod) {}
-    })
 }
