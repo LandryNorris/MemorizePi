@@ -7,7 +7,7 @@ import com.memorizepi.components.Navigation
 import com.memorizepi.theme.AppTheme
 
 @Composable
-fun NavigationScreen(navigationComponent: Navigation) {
+internal fun NavigationScreen(navigationComponent: Navigation) {
     AppTheme {
         Surface {
             Children(navigationComponent.childStack) {

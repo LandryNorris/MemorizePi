@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework.BitcodeEmbeddingMode
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.TestExecutable
 
@@ -9,6 +10,7 @@ val settingsVersion: String by project
 
 plugins {
     kotlin("multiplatform")
+    kotlin("native.cocoapods")
     id("com.android.library")
     id("org.jetbrains.compose")
     id("kotlin-parcelize")
@@ -20,21 +22,8 @@ plugins {
 kotlin {
     android()
     
-    ios {
-        binaries {
-            framework {
-                baseName = "shared"
-            }
-        }
-    }
-
-    iosSimulatorArm64 {
-        binaries {
-            framework {
-                baseName = "shared"
-            }
-        }
-    }
+    ios()
+    iosSimulatorArm64()
 
     sourceSets {
         val commonMain by getting {
@@ -164,6 +153,29 @@ sqldelight {
         packageName = "com.memorizepi.generated"
         deriveSchemaFromMigrations = true
         verifyMigrations = true
+    }
+}
+
+kotlin {
+    cocoapods {
+        version = "0.0.1"
+        homepage = "https://github.com/LandryNorris/MemorizePi"
+        summary = "Logic for MemorizePi"
+
+        podfile = project.file("../iosApp/Podfile")
+
+        framework {
+            baseName = "shared"
+
+            isStatic = false
+            embedBitcode(BitcodeEmbeddingMode.DISABLE)
+
+            freeCompilerArgs += listOf(
+                "-linker-option", "-framework", "-linker-option", "Metal",
+                "-linker-option", "-framework", "-linker-option", "CoreText",
+                "-linker-option", "-framework", "-linker-option", "CoreGraphics"
+            )
+        }
     }
 }
 

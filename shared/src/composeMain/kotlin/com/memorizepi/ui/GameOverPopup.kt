@@ -8,7 +8,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun GameOverPopup(returnToMenu: () -> Unit = {}, retry: () -> Unit = {}) {
+internal fun GameOverPopup(returnToMenu: () -> Unit = {}, retry: () -> Unit = {}) {
     Popup(onDismissRequest = {}, popupPositionProvider = positionProvider()) {
         Column {
             Text("Game Over")

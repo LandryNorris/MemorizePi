@@ -26,7 +26,7 @@ import com.memorizepi.ui.Popup
 import kotlinx.coroutines.coroutineScope
 
 @Composable
-fun <T> DropDownMenu(label: String, value: T, values: List<T>,
+internal fun <T> DropDownMenu(label: String, value: T, values: List<T>,
                      getItemText: (T) -> String, itemSelected: (T) -> Unit,
                      isExpanded: Boolean, setExpanded: (Boolean) -> Unit) {
     DropdownMenuBox(expanded = isExpanded,

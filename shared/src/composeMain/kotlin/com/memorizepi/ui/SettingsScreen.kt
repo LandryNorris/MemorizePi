@@ -13,9 +13,8 @@ import com.memorizepi.components.SettingsLogic
 import com.memorizepi.components.SettingsState
 import com.memorizepi.ui.dropdown.DropDownMenu
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun SettingsScreen(logic: SettingsLogic) {
+internal fun SettingsScreen(logic: SettingsLogic) {
     val state by logic.state.collectAsState(initial = SettingsState())
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,

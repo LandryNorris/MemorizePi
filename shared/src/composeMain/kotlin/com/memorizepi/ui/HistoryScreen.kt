@@ -15,7 +15,7 @@ import com.memorizepi.components.HistoryLogic
 import com.memorizepi.components.HistoryState
 
 @Composable
-fun HistoryScreen(logic: HistoryLogic) {
+internal fun HistoryScreen(logic: HistoryLogic) {
     val state by logic.state.collectAsState(initial = HistoryState())
     val rounds by logic.rounds.collectAsState(initial = listOf())
     Column(modifier = Modifier.fillMaxSize()) {

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.memorizepi.components.MenuLogic
 
 @Composable
-fun MenuScreen(menuComponent: MenuLogic) {
+internal fun MenuScreen(menuComponent: MenuLogic) {
     Column(modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.SpaceEvenly,
         horizontalAlignment = Alignment.CenterHorizontally) {

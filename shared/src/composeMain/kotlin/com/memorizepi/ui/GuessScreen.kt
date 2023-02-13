@@ -15,7 +15,7 @@ import com.memorizepi.components.GuessLogic
 import com.memorizepi.components.GuessState
 
 @Composable
-fun GuessScreen(component: GuessLogic) {
+internal fun GuessScreen(component: GuessLogic) {
     val state by component.state.collectAsState(GuessState())
 
     if(state.gameOver) {
