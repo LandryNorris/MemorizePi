@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontFamily
 
 @Composable
-fun AppTheme(content: @Composable () -> Unit) {
+internal fun AppTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = Theme.colors,
         typography = Theme.typography,
@@ -14,13 +14,13 @@ fun AppTheme(content: @Composable () -> Unit) {
     )
 }
 
-object Theme {
-    val colors: Colors
+internal object Theme {
+    internal val colors: Colors
         @Composable
         get() = if(isSystemInDarkTheme()) darkColors()
                 else lightColors()
 
-    val typography: Typography
+    internal val typography: Typography
         get() = Typography(
             defaultFontFamily = FontFamily.SansSerif
         )
